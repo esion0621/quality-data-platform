@@ -179,9 +179,3 @@ curl -X POST http://node1:2006/api/rules/trigger/{ruleId}
 
 ## 📄 许可证
 [Apache License 2.0](LICENSE)
-```
-
----
-
-### 图片存放说明
-在项目根目录创建 `docs/` 文件夹，并将上述截图放入该文件夹。README 中的图片链接就会正确显示。例如：`![架构图](docs/architecture.png)` 需要你手动放置 `architecture.png` 文件。
