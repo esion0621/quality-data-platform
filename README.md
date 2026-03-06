@@ -37,8 +37,46 @@
 |        | HBase | 2.4.11 |
 
 ## 🧱 系统架构
+```mermaid
+graph TD
+    subgraph 前端
+        A[React 应用] -->|API 请求| B[后端 Spring Boot]
+    end
 
-![架构图](docs/architecture.png)
+    subgraph 后端
+        B --> C[(MySQL: 规则/任务/离线告警)]
+        B --> D[(Redis: 实时指标)]
+        B --> E[(HBase: 实时告警)]
+    end
+
+    subgraph 实时流处理
+        F[Kafka: user_clicks] --> G[Spark Structured Streaming]
+        G --> D
+        G --> E
+        G -->|触发钉钉告警| H[钉钉机器人]
+    end
+
+    subgraph 离线批处理
+        I[HDFS 数据源] --> J[Spark 离线作业]
+        J --> C
+        B -->|调度| J
+    end
+
+    subgraph 外部系统
+        K[钉钉] --> H
+    end
+
+    style A fill:#e1f5fe,stroke:#01579b
+    style B fill:#fff9c4,stroke:#f57f17
+    style C fill:#c8e6c9,stroke:#1b5e20
+    style D fill:#ffe0b2,stroke:#bf360c
+    style E fill:#ffccbc,stroke:#bf360c
+    style F fill:#e1bee7,stroke:#4a148c
+    style G fill:#d1c4e9,stroke:#311b92
+    style I fill:#b3e5fc,stroke:#0277bd
+    style J fill:#b2ebf2,stroke:#006064
+    style H fill:#ffcdd2,stroke:#b71c1c
+```
 
 - **前端**：提供规则管理、任务实例、告警记录、实时监控看板。
 - **后端**：提供 REST API，管理规则元数据、任务实例和离线告警，通过 Quartz 调度离线 Spark 作业。
