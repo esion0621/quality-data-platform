@@ -15,8 +15,8 @@ import java.nio.charset.StandardCharsets
 import java.util.Base64
 
 object StreamingQualityJob {
-  val DINGTALK_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=6c923f33892f65b7ba68775b255cc717b8a269a9587d671120f3939c35511ee2"
-  val DINGTALK_SECRET = "SEC631193779ffe8e8082636c767e976d6f6c2d4a055877ff23663ff0021ca2b71b"
+  val DINGTALK_WEBHOOK = ""
+  val DINGTALK_SECRET = ""
 
   // HBase 连接配置（建议使用连接池或单例）
   @transient private lazy val hbaseConnection: Connection = {
@@ -24,7 +24,7 @@ object StreamingQualityJob {
     conf.set("hbase.zookeeper.quorum", "master,slave1,slave2")
     conf.set("hbase.zookeeper.property.clientPort", "2181")
     val conn = ConnectionFactory.createConnection(conf)
-    // 可选：检查表是否存在，不存在则创建
+    // 检查表是否存在，不存在则创建
     try {
       val admin = conn.getAdmin
       val tableName = TableName.valueOf("realtime_alert")
